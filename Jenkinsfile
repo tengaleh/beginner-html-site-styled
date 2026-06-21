@@ -10,12 +10,11 @@ pipeline {
  stages {
 
    stage('Clone') {
-
-     steps {
-          git branch: 'main',
+    steps {
+        git branch: 'main',
             url: 'https://github.com/tengaleh/beginner-html-site-styled.git'
-     }
-   }
+    }
+}
 
    stage('Build Image') {
 
@@ -25,22 +24,18 @@ pipeline {
    }
 
    stage('Docker Login') {
-
-     steps {
-
-       withCredentials([
-         usernamePassword(
-         credentialsId: 'dockerhub',
-         usernameVariable: 'USER',
-         passwordVariable: 'PASS')
-       ]) {
-
-       sh '''
-       echo $PASS | docker login -u $USER --password-stdin
-       '''
-       }
-     }
-   }
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub',
+            usernameVariable: 'USER',
+            passwordVariable: 'PASS'
+        )]) {
+            sh '''
+                echo "$PASS" | docker login -u "$USER" --password-stdin
+            '''
+        }
+    }
+    }
 
    stage('Push Image') {
 

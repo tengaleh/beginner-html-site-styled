@@ -15,34 +15,27 @@ pipeline {
             }
         }
 
-        stage('Build Image') {
-            steps {
-                script {
-                    env.FULL_IMAGE = "${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
-                }
-                sh "docker build -t $FULL_IMAGE ."
-            }
-        }
-
-        stage('Docker Login') {
+        stage('Build + Push') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub',
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
+
                     sh '''
+                        set -e
+
+                        FULL_IMAGE=$DOCKER_USER/$IMAGE_NAME:$IMAGE_TAG
+
+                        echo "Building: $FULL_IMAGE"
+                        docker build -t $FULL_IMAGE .
+
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+                        docker push $FULL_IMAGE
                     '''
                 }
-            }
-        }
-
-        stage('Push Image') {
-            steps {
-                sh '''
-                    docker push $FULL_IMAGE
-                '''
             }
         }
 

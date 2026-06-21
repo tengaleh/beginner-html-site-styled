@@ -43,8 +43,8 @@ pipeline {
 
        sh '''
        docker push $IMAGE
-       docker tag $IMAGE dockerhubuser/website:latest
-       docker push dockerhubuser/website:latest
+       docker tag $IMAGE hemantat/dockerhubuser:latest
+       docker push hemantat/dockerhubuser:latest
        '''
      }
    }

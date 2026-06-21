@@ -17,7 +17,7 @@ spec:
       containers:
       - name: website
 
-        image: dockerhubuser/website:latest
+        image: hemantat/website:latest
 
         ports:
         - containerPort: 80

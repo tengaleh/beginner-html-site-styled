@@ -12,7 +12,8 @@ pipeline {
    stage('Clone') {
 
      steps {
-       git 'https://github.com/tengaleh/beginner-html-site-styled.git'
+          git branch: 'main',
+            url: 'https://github.com/tengaleh/beginner-html-site-styled.git'
      }
    }
 
